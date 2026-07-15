@@ -4,6 +4,9 @@ This file connects the repository's recommendations to public evidence. It
 separates portable requirements from vendor behavior and distinguishes measured
 results from practitioner judgment.
 
+For concrete source patterns and rewritten examples, read the
+[source reviews](source-reviews.md).
+
 Last reviewed: 2026-07-15.
 
 ## Evidence levels

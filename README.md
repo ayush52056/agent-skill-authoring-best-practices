@@ -14,7 +14,8 @@ write, evaluate, secure, and maintain skills. It is not a skill marketplace.
 4. Score the draft with the [quality rubric](docs/quality-rubric.md).
 5. Run the [trigger](templates/trigger-evals.json) and [task](templates/task-eval.json) evaluations.
 6. Apply the controls in [security and governance](docs/security-and-governance.md).
-7. Validate the package:
+7. Review [how public sources became examples](docs/source-reviews.md).
+8. Validate the package:
 
    ```text
    python scripts/validate_skill.py path/to/skill
@@ -52,6 +53,7 @@ docs/
   invocation-and-portfolios.md Invocation policy and catalog design
   security-and-governance.md   Supply-chain and lifecycle controls
   evidence-map.md              Recommendation-to-source traceability
+  source-reviews.md            Source patterns and how they were applied
 examples/
   diagnose-test-failures/      Worked example with progressive disclosure
 templates/

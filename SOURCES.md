@@ -2,9 +2,9 @@
 
 This repository synthesizes guidance rather than copying any single source.
 Primary standards and official implementations carry the most weight.
-practitioner guidance and research are used to refine or challenge them.
+Practitioner guidance and research are used to refine or challenge them.
 
-Last reviewed: 2026-07-15.
+Last reviewed: 2026-07-16.
 
 ## Research method and coverage
 
@@ -23,6 +23,9 @@ clearly labeled tradeoff. Stars, search rank, and repetition are not sufficient.
 Recommendations are mapped to their strongest supporting evidence in
 [the evidence map](docs/evidence-map.md). Disagreements and study limitations are
 preserved instead of averaged into false consensus.
+
+The [source reviews](docs/source-reviews.md) explain what each source contributes,
+show a small example or signal, and record how the handbook uses it.
 
 ## Open standard and official documentation
 

@@ -27,6 +27,18 @@ schema, permission boundary, or hook can enforce mechanically.
 | Invariant that must never depend on model compliance | Test, linter, policy, or hook |
 | Large independent task needing isolated context | Subagent or separate task |
 
+Example:
+
+| Requirement | Better choice | Why |
+|---|---|---|
+| Follow the same formatting rule in every repository task | Repository instruction | The rule is always relevant |
+| Diagnose failed CI only when a workflow is red | Skill | The workflow is conditional and detailed |
+| Retrieve the current status of a remote workflow | Tool or MCP server | The answer depends on live external state |
+| Block secrets from commits | Hook or scanner | The rule must not depend on agent judgment |
+
+This example applies the extension boundaries described by
+[GitHub, Cursor, and context-engineering sources](source-reviews.md#open-standard-and-official-documentation).
+
 ## 2. Start from observed behavior
 
 Before writing instructions, record concrete examples:
@@ -56,6 +68,18 @@ Specify the skill before implementing it:
 The contract should make the process predictable without forcing identical
 outputs where project context requires judgment.
 
+Example contract for a CI diagnosis skill:
+
+```text
+Input: pull request, failed workflow, or failing local command
+Output: first causal error, supporting evidence, and verified fix or diagnosis
+Invariant: do not change unrelated code or weaken a check
+Failure behavior: report inaccessible logs and stop before guessing
+Done: the failed check passes, or the unresolved cause is supported by evidence
+```
+
+The contract describes behavior without forcing one repository-specific command.
+
 ## 4. Define a precise trigger contract
 
 The `description` is the primary routing interface. Write it before the body.
@@ -73,6 +97,16 @@ Avoid:
 ```yaml
 description: Helps with testing and code quality.
 ```
+
+Why the first example is stronger:
+
+- It starts with the action `Diagnose failing automated tests`.
+- It names the method and expected result.
+- It includes realistic phrases such as `tests fail locally`, `CI`, and `flaky`.
+- It excludes general code-quality work by owning one diagnosis workflow.
+
+The format comes from the open specification. Front-loading and catalog
+boundaries come from [OpenAI and practitioner examples](source-reviews.md).
 
 Trigger-writing rules:
 
@@ -141,7 +175,7 @@ Write instructions in imperative form. For every stage, tell the agent:
 
 Give one preferred default path and only the branches that materially change
 the result. Use ordered steps where order, branching, or checkpoints matter.
-otherwise state the outcome, constraints, and validation without inventing a
+Otherwise state the outcome, constraints, and validation without inventing a
 rigid transcript. Explain why only when the reason helps the agent generalize or
 resist a known failure. Provide an output template or input/output example when
 format is part of correctness.
@@ -157,6 +191,12 @@ Strong:
 
 > Inspect the changed public interfaces, run the narrowest affected tests, and
 > report each unresolved failure with its command and first causal error.
+
+Source pattern:
+
+The Agent Skills best-practices guide favors procedures that generalize. The
+strong example above follows that pattern by naming the inspection, validation,
+and report requirements without hardcoding a project command.
 
 Do not prescribe exact commands when the command depends on the repository and
 the agent can discover it safely. Do prescribe or script commands when order,
@@ -191,6 +231,21 @@ points to another.
 For reference files longer than 100 lines, include a table of contents or search
 anchors. Do not duplicate the same rule in multiple files.
 
+Weak resource instruction:
+
+```markdown
+See `references/` for details.
+```
+
+Strong resource instruction:
+
+```markdown
+Read `references/api-errors.md` only after an API request returns a non-success status.
+```
+
+The strong form is adapted from the conditional-reference pattern in the
+[Agent Skills and Anthropic guidance](source-reviews.md#open-standard-and-official-documentation).
+
 Observe which references the agent actually loads during evaluations. Promote
 repeatedly required guidance into `SKILL.md`, improve routing for resources that
 are needed but skipped, and delete resources that remain unused.
@@ -216,6 +271,20 @@ verifiable, or too fragile for ad hoc generation. Scripts should:
 For high-risk batch or destructive transformations, prefer
 plan -> validate -> execute -> verify: first write a structured intermediate
 artifact, validate it independently, then apply it and inspect the result.
+
+Example:
+
+```text
+1. Write proposed file moves to move-plan.json.
+2. Validate that every source exists and every destination stays inside the target root.
+3. Show the validated plan before changing files.
+4. Apply the plan.
+5. Verify the resulting paths and report any item that did not move.
+```
+
+This is a rewritten version of the structured intermediate-file pattern shown
+in official authoring guidance. The extra preview is appropriate because moving
+files can be destructive.
 
 ### References
 
@@ -253,7 +322,7 @@ unverified result to “complete.”
 Document recovery paths for predictable failures: missing tools, invalid
 inputs, unavailable services, permission denial, failing checks, and partial
 state. For high-risk workflows, name common unsafe shortcuts and the required
-response. for example, do not disable a security check merely to make a pipeline
+response. For example, do not disable a security check merely to make a pipeline
 green.
 
 Use anti-rationalization language selectively. It is valuable when agents have

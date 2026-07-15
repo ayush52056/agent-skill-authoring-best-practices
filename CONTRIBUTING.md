@@ -11,6 +11,8 @@ Keep this repository focused on evidence-backed skill-authoring practice.
 - a source in `SOURCES.md` when the claim depends on external guidance.
 - an evidence-level entry or updated qualification in `docs/evidence-map.md` for
   a consequential recommendation.
+- a source-review entry that shows the useful example, our adoption, and its
+  limit when a new source is added.
 
 ## Review rules
 
@@ -22,6 +24,10 @@ Keep this repository focused on evidence-backed skill-authoring practice.
 - Keep trigger and task fixtures machine-readable. Mark cases held out before tuning.
 - Test portfolio collisions when a description or invocation policy changes.
 - Separate measured findings from practitioner heuristics and report study scope.
+- Mark direct excerpts clearly and keep them short. Prefer a paraphrase and a
+  rewritten repository example when the exact wording is not necessary.
+- Explain why an example demonstrates the rule. Do not add examples that only
+  repeat the surrounding text.
 - Remove superseded guidance in the same change.
 - Review scripts and links as carefully as prose.
 
