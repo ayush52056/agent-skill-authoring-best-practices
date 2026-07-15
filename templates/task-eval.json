@@ -1,0 +1,36 @@
+{
+  "skill": "replace-with-skill-name",
+  "suite_version": "0.1.0",
+  "cases": [
+    {
+      "id": "task-001",
+      "purpose": "normal-success-path",
+      "prompt": "The raw user task without the expected answer embedded in it.",
+      "fixtures": ["fixtures/task-001/"],
+      "expected_outcomes": [
+        "An observable result the verifier can check",
+        "Required validation evidence is reported"
+      ],
+      "required_behaviors": [
+        "Inspect the relevant current state before mutation"
+      ],
+      "forbidden_behaviors": [
+        "Claim completion when the required check did not run"
+      ],
+      "verifier": {
+        "type": "command-or-rubric",
+        "value": "replace-with-verifier",
+        "pass_condition": "replace-with-objective-pass-condition"
+      },
+      "configurations": [
+        {"label": "baseline", "skill_enabled": false},
+        {"label": "candidate", "skill_enabled": true}
+      ],
+      "hosts": ["replace-with-supported-host"],
+      "models": ["replace-with-supported-model"],
+      "trials_per_configuration": 3,
+      "held_out": false,
+      "risk": "medium"
+    }
+  ]
+}

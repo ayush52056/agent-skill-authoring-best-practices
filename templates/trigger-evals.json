@@ -1,0 +1,38 @@
+{
+  "skill": "replace-with-skill-name",
+  "suite_version": "0.1.0",
+  "host": "replace-with-host",
+  "model": "replace-with-model",
+  "cases": [
+    {
+      "id": "positive-001",
+      "group": "positive",
+      "prompt": "A realistic request that should activate the skill.",
+      "should_trigger": true,
+      "expected_skill": "replace-with-skill-name",
+      "competing_skills": [],
+      "rationale": "The request needs the complete workflow owned by this skill.",
+      "held_out": false
+    },
+    {
+      "id": "negative-001",
+      "group": "negative",
+      "prompt": "A nearby request that shares vocabulary but needs another workflow.",
+      "should_trigger": false,
+      "expected_skill": null,
+      "competing_skills": ["replace-with-neighbor"],
+      "rationale": "Shared keywords alone must not select this skill.",
+      "held_out": false
+    },
+    {
+      "id": "boundary-001",
+      "group": "boundary",
+      "prompt": "An incomplete request at the edge of the skill's scope.",
+      "should_trigger": false,
+      "expected_skill": null,
+      "competing_skills": [],
+      "rationale": "The agent should clarify before selecting a specialized workflow.",
+      "held_out": true
+    }
+  ]
+}
