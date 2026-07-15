@@ -44,34 +44,27 @@ A strong skill:
 
 ## Repository map
 
-### Core guides
-
-| Guide | What it helps you do |
-|---|---|
-| [Authoring standard](docs/authoring-standard.md) | Design and write a complete skill |
-| [Invocation and portfolios](docs/invocation-and-portfolios.md) | Choose how skills run and prevent catalog conflicts |
-| [Evaluation guide](docs/evaluation.md) | Test triggering, execution, safety, and improvement |
-| [Quality rubric](docs/quality-rubric.md) | Score a skill and find release blockers |
-| [Security and governance](docs/security-and-governance.md) | Review permissions, dependencies, provenance, and updates |
-| [Evidence map](docs/evidence-map.md) | See the evidence and limits behind each recommendation |
-
-### Templates and example
-
-| Resource | What it provides |
-|---|---|
-| [SKILL.md template](templates/SKILL.md) | A portable starting structure |
-| [Trigger evaluation template](templates/trigger-evals.json) | Positive, negative, and boundary test cases |
-| [Task evaluation template](templates/task-eval.json) | Baseline comparisons and repeated task trials |
-| [Worked example](examples/diagnose-test-failures/SKILL.md) | A compact skill with progressive disclosure |
-
-### Tools and project information
-
-| Resource | What it provides |
-|---|---|
-| [Skill validator](scripts/validate_skill.py) | Structural and common-quality checks |
-| [Validator tests](tests/test_validate_skill.py) | Regression coverage for the validator |
-| [Sources](SOURCES.md) | Official docs, public repositories, practitioner writing, and research |
-| [Contributing guide](CONTRIBUTING.md) | Evidence and review rules for changes |
+```text
+docs/
+  authoring-standard.md        Canonical design and writing standard
+  quality-rubric.md            Scored review rubric and hard gates
+  evaluation.md                Trigger and task evaluation method
+  invocation-and-portfolios.md Invocation policy and catalog design
+  security-and-governance.md   Supply-chain and lifecycle controls
+  evidence-map.md              Recommendation-to-source traceability
+examples/
+  diagnose-test-failures/      Worked example with progressive disclosure
+templates/
+  SKILL.md                     Portable starter template
+  trigger-evals.json           Trigger-suite starter fixture
+  task-eval.json               Baseline and task-evaluation fixture
+scripts/
+  validate_skill.py            Lightweight structural validator
+tests/
+  test_validate_skill.py       Validator tests
+SOURCES.md                     Primary sources and practitioner references
+CONTRIBUTING.md                Evidence requirements for changes
+```
 
 ## Scope and portability
 
