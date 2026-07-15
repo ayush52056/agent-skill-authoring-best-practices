@@ -1,7 +1,7 @@
 # Sources
 
 This repository synthesizes guidance rather than copying any single source.
-Primary standards and official implementations carry the most weight;
+Primary standards and official implementations carry the most weight.
 practitioner guidance and research are used to refine or challenge them.
 
 Last reviewed: 2026-07-15.
@@ -11,17 +11,17 @@ Last reviewed: 2026-07-15.
 This is a systematic high-signal review, not a claim that every webpage or
 GitHub repository on the internet has been read. Discovery covered:
 
-- the open specification and official host documentation;
-- first-party and widely used production skill repositories;
-- senior engineers' implementation notes, talks, and authoring guides;
-- empirical benchmark, maintenance, smell, retrieval, and security research;
+- the open specification and official host documentation.
+- first-party and widely used production skill repositories.
+- senior engineers' implementation notes, talks, and authoring guides.
+- empirical benchmark, maintenance, smell, retrieval, and security research.
 - adjacent context-engineering and harness practices that transfer to skills.
 
 A source is included when it contributes a portable requirement, a documented
 host behavior, a reproducible implementation pattern, measured evidence, or a
 clearly labeled tradeoff. Stars, search rank, and repetition are not sufficient.
 Recommendations are mapped to their strongest supporting evidence in
-[the evidence map](docs/evidence-map.md); disagreements and study limitations are
+[the evidence map](docs/evidence-map.md). Disagreements and study limitations are
 preserved instead of averaged into false consensus.
 
 ## Open standard and official documentation
@@ -85,7 +85,7 @@ preserved instead of averaged into false consensus.
 - Treat stars, registry rank, anecdotes, and social-media consensus as discovery signals only.
 - Label host-specific behavior instead of presenting it as a portable requirement.
 - Record consequential claims in [the evidence map](docs/evidence-map.md) with a
-  confidence level and qualification; a source list alone is not traceability.
+  confidence level and qualification. A source list alone is not traceability.
 - Preserve disagreements when evidence supports different choices under
   different risk, routing, or task conditions.
 - Revisit guidance as agents, routing behavior, and the open specification evolve.

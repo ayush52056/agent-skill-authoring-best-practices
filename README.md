@@ -1,12 +1,10 @@
 # Agent Skill Authoring Best Practices
 
-An evidence-based, vendor-neutral guide for creating Agent Skills that trigger
-reliably, use context efficiently, execute repeatable workflows, and produce
-verifiable results.
+An evidence-based guide to creating Agent Skills that are easy to trigger,
+efficient to run, safe to share, and simple to test.
 
-This repository is deliberately narrow. It covers how to design, write,
-evaluate, secure, and maintain skills. It is not a marketplace or a collection
-of unrelated skills.
+This repository focuses only on skill authoring. It explains how to design,
+write, evaluate, secure, and maintain skills. It is not a skill marketplace.
 
 ## Start here
 
@@ -29,43 +27,51 @@ for a compact worked example.
 
 A strong skill:
 
-- fixes a recurring, observed agent failure or packages genuinely specialized knowledge;
-- has a narrow description that says what it does and when it should trigger;
-- front-loads distinctive routing terms and chooses automatic versus explicit invocation deliberately;
-- describes an actionable process instead of an essay or persona;
-- assigns strictness in proportion to operational risk;
-- keeps `SKILL.md` lean and loads references only when a branch needs them;
-- uses scripts for deterministic, repeated, or fragile operations;
-- requires observable evidence before reporting completion;
-- is compared with a no-skill baseline on positive, negative, and boundary prompts;
-- survives repeated held-out trials with neighboring skills and the real production catalog;
-- is reviewed and governed like an executable software dependency;
-- is re-tested after model, host, tool, or policy changes and retired when it stops adding value;
-- improves from real failure traces instead of accumulating speculative rules.
+- Solve a recurring agent problem or provide knowledge the agent does not already have.
+- Explain clearly what it does and when it should run.
+- Put the most useful trigger words near the start of the description.
+- Choose automatic or user-requested invocation based on risk.
+- Give the agent a practical workflow instead of a long essay or persona.
+- Use strict instructions only when the task needs them.
+- Keep `SKILL.md` focused and load extra references only when needed.
+- Use scripts for repeatable or fragile operations.
+- Require proof before the agent reports completion.
+- Compare results with and without the skill.
+- Test nearby prompts, competing skills, and the real skill catalog.
+- Review the skill like a software dependency.
+- Re-test it after model, host, tool, or policy changes.
+- Remove it when it no longer improves results.
 
 ## Repository map
 
-```text
-docs/
-  authoring-standard.md       Canonical design and writing standard
-  quality-rubric.md           Scored review rubric and hard gates
-  evaluation.md               Trigger and task evaluation method
-  invocation-and-portfolios.md Invocation policy and catalog design
-  security-and-governance.md  Supply-chain and lifecycle controls
-  evidence-map.md             Recommendation-to-source traceability
-examples/
-  diagnose-test-failures/     Worked example with progressive disclosure
-templates/
-  SKILL.md                    Portable starter template
-  trigger-evals.json          Trigger-suite starter fixture
-  task-eval.json              Baseline and task-evaluation fixture
-scripts/
-  validate_skill.py           Lightweight structural validator
-tests/
-  test_validate_skill.py      Validator tests
-SOURCES.md                    Primary sources and practitioner references
-CONTRIBUTING.md               Evidence requirements for changes
-```
+### Core guides
+
+| Guide | What it helps you do |
+|---|---|
+| [Authoring standard](docs/authoring-standard.md) | Design and write a complete skill |
+| [Invocation and portfolios](docs/invocation-and-portfolios.md) | Choose how skills run and prevent catalog conflicts |
+| [Evaluation guide](docs/evaluation.md) | Test triggering, execution, safety, and improvement |
+| [Quality rubric](docs/quality-rubric.md) | Score a skill and find release blockers |
+| [Security and governance](docs/security-and-governance.md) | Review permissions, dependencies, provenance, and updates |
+| [Evidence map](docs/evidence-map.md) | See the evidence and limits behind each recommendation |
+
+### Templates and example
+
+| Resource | What it provides |
+|---|---|
+| [SKILL.md template](templates/SKILL.md) | A portable starting structure |
+| [Trigger evaluation template](templates/trigger-evals.json) | Positive, negative, and boundary test cases |
+| [Task evaluation template](templates/task-eval.json) | Baseline comparisons and repeated task trials |
+| [Worked example](examples/diagnose-test-failures/SKILL.md) | A compact skill with progressive disclosure |
+
+### Tools and project information
+
+| Resource | What it provides |
+|---|---|
+| [Skill validator](scripts/validate_skill.py) | Structural and common-quality checks |
+| [Validator tests](tests/test_validate_skill.py) | Regression coverage for the validator |
+| [Sources](SOURCES.md) | Official docs, public repositories, practitioner writing, and research |
+| [Contributing guide](CONTRIBUTING.md) | Evidence and review rules for changes |
 
 ## Scope and portability
 
@@ -76,15 +82,15 @@ metadata can be added when required, but should not replace the portable core.
 
 ## Project standard
 
-Popularity is not treated as proof. Guidance belongs here when it is supported
-by an official specification, a credible production implementation, empirical
-evidence, or a reproducible evaluation. Conflicting recommendations are labeled
-as tradeoffs rather than presented as universal rules.
+Popularity is not proof. A recommendation belongs here only when it has support
+from an official specification, a trusted production implementation, published
+research, or a repeatable evaluation. When sources disagree, the repository
+explains the tradeoff instead of pretending that one rule fits every skill.
 
-The [evidence map](docs/evidence-map.md) records the level, source, and
-qualification for consequential recommendations. It is the fastest way to
-audit whether a rule is a format requirement, official guidance, an empirical
-finding, or a practitioner pattern that still needs local proof.
+The [evidence map](docs/evidence-map.md) records the source, evidence level, and
+limits for important recommendations. Use it to see whether a rule comes from a
+format requirement, official guidance, published research, or practitioner
+experience that still needs local testing.
 
 ## License
 

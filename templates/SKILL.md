@@ -8,7 +8,7 @@ description: Perform the distinctive action on the relevant artifact and produce
 ## Inputs
 
 - Identify the information and artifacts required to begin.
-- Discover safe defaults when possible; ask only for choices that materially change the result.
+- Discover safe defaults when possible. Ask only for choices that materially change the result.
 - Stop and report the missing requirement when proceeding would be unsafe.
 
 ## Outputs
@@ -27,7 +27,7 @@ description: Perform the distinctive action on the relevant artifact and produce
 
 Use this ordered form only when sequence or checkpoints matter. For adaptable
 work, replace it with a preferred outcome, constraints, decision criteria, and
-validation. Keep one default path; add only branches that change the result.
+validation. Keep one default path. Add only branches that change the result.
 
 ## Validation
 
@@ -46,7 +46,7 @@ validation. Keep one default path; add only branches that change the result.
 ## Resources
 
 - Link and read the relevant file under `references/` only when its workflow branch needs it.
-- Link and run the deterministic operation under `scripts/`; declare its runtime dependencies and expected output.
+- Link and run the deterministic operation under `scripts/`. Declare its runtime dependencies and expected output.
 - Reuse files in `assets/` when producing the associated output.
 
 Delete resource entries and sections that the skill does not need. Keep detailed

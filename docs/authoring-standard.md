@@ -8,10 +8,10 @@ format rules and host-specific behavior are intentionally separated.
 
 Create a skill when at least one of these is true:
 
-- agents repeatedly fail at a recognizable task;
-- the workflow contains non-obvious ordering, branching, or recovery behavior;
-- the task requires organization-, product-, or domain-specific knowledge;
-- deterministic scripts, templates, or references should travel with the workflow;
+- agents repeatedly fail at a recognizable task.
+- the workflow contains non-obvious ordering, branching, or recovery behavior.
+- the task requires organization-, product-, or domain-specific knowledge.
+- deterministic scripts, templates, or references should travel with the workflow.
 - the capability should load only when relevant rather than remain in every prompt.
 
 Do not create a skill merely to restate general model knowledge, establish a
@@ -76,15 +76,15 @@ description: Helps with testing and code quality.
 
 Trigger-writing rules:
 
-- use terms users actually say;
+- use terms users actually say.
 - front-load the distinctive action, artifact, and trigger terms because hosts
-  may shorten descriptions in a large catalog;
-- keep one coherent intent per skill;
-- include adjacent cases only when the same workflow handles them;
-- avoid identity claims such as “expert,” promotional language, and duplicate synonyms;
-- keep host-specific invocation syntax out of the portable description;
+  may shorten descriptions in a large catalog.
+- keep one coherent intent per skill.
+- include adjacent cases only when the same workflow handles them.
+- avoid identity claims such as “expert,” promotional language, and duplicate synonyms.
+- keep host-specific invocation syntax out of the portable description.
 - evaluate exclusions with realistic negative and near-miss prompts instead of
-  making the description enormous;
+  making the description enormous.
 - compare the description against its closest competing skills, not in isolation.
 
 ## 5. Keep the package portable
@@ -108,7 +108,7 @@ description: What the skill does. Use when the relevant trigger conditions occur
 ---
 ```
 
-Use lowercase letters, digits, and hyphens for `name`; keep it under 64
+Use lowercase letters, digits, and hyphens for `name`. Keep it under 64
 characters and match the containing directory. Prefer short, verb-led names.
 
 Some hosts support additional frontmatter or UI metadata. Add it only for a
@@ -125,7 +125,7 @@ expensive, privileged, or production-impacting behavior. Host controls belong
 in host-specific metadata and must not be presented as portable frontmatter.
 
 Before adding a skill, identify its closest catalog neighbors. Consolidate
-skills that own the same prompts and workflow; sharpen boundaries when nearby
+skills that own the same prompts and workflow. Sharpen boundaries when nearby
 prompts need different workflows. Test the skill inside the realistic catalog,
 because routing performance in isolation does not predict performance among
 distractors. Follow [invocation and portfolios](invocation-and-portfolios.md).
@@ -134,13 +134,13 @@ distractors. Follow [invocation and portfolios](invocation-and-portfolios.md).
 
 Write instructions in imperative form. For every stage, tell the agent:
 
-- what to inspect or change;
-- how to choose between meaningful branches;
-- what evidence confirms the stage is complete;
+- what to inspect or change.
+- how to choose between meaningful branches.
+- what evidence confirms the stage is complete.
 - what to do if the expected evidence is absent.
 
 Give one preferred default path and only the branches that materially change
-the result. Use ordered steps where order, branching, or checkpoints matter;
+the result. Use ordered steps where order, branching, or checkpoints matter.
 otherwise state the outcome, constraints, and validation without inventing a
 rigid transcript. Explain why only when the reason helps the agent generalize or
 resist a known failure. Provide an output template or input/output example when
@@ -202,15 +202,15 @@ are needed but skipped, and delete resources that remain unused.
 Add a script when an operation is repeatedly rewritten, mechanically
 verifiable, or too fragile for ad hoc generation. Scripts should:
 
-- accept explicit inputs and validate them;
-- produce stable, inspectable output;
+- accept explicit inputs and validate them.
+- produce stable, inspectable output.
 - fail closed with useful errors that identify the failed input or check and a
-  safe recovery action, rather than returning the problem to the model;
-- avoid hidden network or filesystem side effects;
-- preserve user data unless destructive behavior is explicitly requested;
-- declare and verify runtime dependencies;
-- justify consequential constants, limits, and defaults;
-- document whether the agent should execute the script or inspect it as reference;
+  safe recovery action, rather than returning the problem to the model.
+- avoid hidden network or filesystem side effects.
+- preserve user data unless destructive behavior is explicitly requested.
+- declare and verify runtime dependencies.
+- justify consequential constants, limits, and defaults.
+- document whether the agent should execute the script or inspect it as reference.
 - be tested by execution, not merely reviewed as text.
 
 For high-risk batch or destructive transformations, prefer
@@ -220,7 +220,7 @@ artifact, validate it independently, then apply it and inspect the result.
 ### References
 
 Add references for knowledge the agent may need to reason correctly but does not
-need on every invocation. Put routing instructions in `SKILL.md`; put the detail
+need on every invocation. Put routing instructions in `SKILL.md`. Put the detail
 in the reference.
 
 Do not freeze fast-changing facts into a skill when current official docs or a
@@ -237,11 +237,11 @@ workflow requires their contents.
 
 Define “done” using observable evidence. Depending on the task, require:
 
-- tests or checks and their exact outcomes;
-- a rendered or opened artifact, not just successful file creation;
-- an inspected diff;
-- schema or syntax validation;
-- a dry run or preview before an external mutation;
+- tests or checks and their exact outcomes.
+- a rendered or opened artifact, not just successful file creation.
+- an inspected diff.
+- schema or syntax validation.
+- a dry run or preview before an external mutation.
 - explicit reporting of checks that could not be performed.
 
 Never allow the skill to claim success solely because an action was attempted.
@@ -253,7 +253,7 @@ unverified result to “complete.”
 Document recovery paths for predictable failures: missing tools, invalid
 inputs, unavailable services, permission denial, failing checks, and partial
 state. For high-risk workflows, name common unsafe shortcuts and the required
-response—for example, do not disable a security check merely to make a pipeline
+response. for example, do not disable a security check merely to make a pipeline
 green.
 
 Use anti-rationalization language selectively. It is valuable when agents have
@@ -275,13 +275,13 @@ Follow [evaluation.md](evaluation.md) for the complete method.
 
 ## 13. Maintain the skill as software
 
-- version the skill with its scripts and references;
-- record the origin and license of external material;
-- review upstream changes before adoption;
-- test after changing the name, description, workflow, or scripts;
-- remove obsolete instructions instead of appending exceptions indefinitely;
-- consolidate duplicated rules into one source of truth;
-- update from real usage traces and documented failure modes;
+- version the skill with its scripts and references.
+- record the origin and license of external material.
+- review upstream changes before adoption.
+- test after changing the name, description, workflow, or scripts.
+- remove obsolete instructions instead of appending exceptions indefinitely.
+- consolidate duplicated rules into one source of truth.
+- update from real usage traces and documented failure modes.
 - revalidate host-specific metadata when the portable skill changes.
 
 Classify the skill as primarily a **capability skill** or **preference skill**.
@@ -292,37 +292,37 @@ host routing, permission, or execution semantics change.
 
 ## 14. Reject common skill smells
 
-- broad descriptions that activate for unrelated tasks;
-- generic leading words or keyword bait that compete for unrelated requests;
-- “expert persona” prose without an operational workflow;
-- a monolithic `SKILL.md` containing every reference and variant;
-- rigid command transcripts with hardcoded local paths;
-- too many equal options without a preferred default;
-- unexplained magic constants or undeclared runtime dependencies;
-- instructions that repeat facts the model already knows;
-- steps without completion criteria;
-- success claims without evidence;
-- duplicated or contradictory rules;
-- hidden side effects or implicit external mutations;
-- references that are unlinked, deeply chained, or never loaded;
-- stale version-specific facts with no freshness policy;
-- scripts that were not executed during testing;
-- instructions used where a test, policy, or hook should enforce the rule;
-- endless additions made without deleting obsolete guidance;
+- broad descriptions that activate for unrelated tasks.
+- generic leading words or keyword bait that compete for unrelated requests.
+- “expert persona” prose without an operational workflow.
+- a monolithic `SKILL.md` containing every reference and variant.
+- rigid command transcripts with hardcoded local paths.
+- too many equal options without a preferred default.
+- unexplained magic constants or undeclared runtime dependencies.
+- instructions that repeat facts the model already knows.
+- steps without completion criteria.
+- success claims without evidence.
+- duplicated or contradictory rules.
+- hidden side effects or implicit external mutations.
+- references that are unlinked, deeply chained, or never loaded.
+- stale version-specific facts with no freshness policy.
+- scripts that were not executed during testing.
+- instructions used where a test, policy, or hook should enforce the rule.
+- endless additions made without deleting obsolete guidance.
 - a large catalog of overlapping, unused, or no-longer-helpful skills.
 
 ## 15. Definition of ready
 
 A skill is ready for use only when:
 
-- its problem and boundary are supported by concrete examples;
-- its trigger suite meets the agreed precision and recall targets;
-- explicit or implicit invocation is justified and tested with portfolio distractors;
-- its workflow produces a measurable improvement over the baseline;
-- required validation and failure behavior work in realistic tests;
-- bundled scripts execute successfully on representative inputs;
-- security review covers instructions, code, dependencies, and side effects;
-- the package passes structural validation;
-- held-out repeated trials pass on every supported model and host;
-- the freshness and retirement policy is documented;
+- its problem and boundary are supported by concrete examples.
+- its trigger suite meets the agreed precision and recall targets.
+- explicit or implicit invocation is justified and tested with portfolio distractors.
+- its workflow produces a measurable improvement over the baseline.
+- required validation and failure behavior work in realistic tests.
+- bundled scripts execute successfully on representative inputs.
+- security review covers instructions, code, dependencies, and side effects.
+- the package passes structural validation.
+- held-out repeated trials pass on every supported model and host.
+- the freshness and retirement policy is documented.
 - a maintainer and update path are known.
