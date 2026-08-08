@@ -14,6 +14,27 @@ NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 XML_TAG_RE = re.compile(r"<[^>]+>")
 VAGUE_NAMES = {"helper", "helpers", "misc", "skill", "tools", "utilities", "utils"}
+PORTABLE_FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
+CLAUDE_CODE_FIELDS = PORTABLE_FIELDS | {
+    "when_to_use",
+    "argument-hint",
+    "arguments",
+    "disable-model-invocation",
+    "user-invocable",
+    "model",
+    "effort",
+    "context",
+    "agent",
+    "hooks",
+    "paths",
+    "shell",
+}
+PROFILE_FIELDS = {
+    "portable": PORTABLE_FIELDS,
+    "claude-code": CLAUDE_CODE_FIELDS,
+    "codex": PORTABLE_FIELDS,
+    "github-copilot": PORTABLE_FIELDS,
+}
 
 
 @dataclass(frozen=True)
@@ -81,6 +102,49 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str, list[Issue]]:
     return data, body, issues
 
 
+def _top_level_frontmatter_keys(text: str) -> set[str]:
+    lines = text.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return set()
+    try:
+        end = next(i for i in range(1, len(lines)) if lines[i].strip() == "---")
+    except StopIteration:
+        return set()
+    keys: set[str] = set()
+    for raw in lines[1:end]:
+        if raw[:1].isspace() or ":" not in raw:
+            continue
+        key = raw.split(":", 1)[0].strip()
+        if key:
+            keys.add(key)
+    return keys
+
+
+def _frontmatter_field_text(text: str, field: str) -> str:
+    lines = text.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return ""
+    try:
+        end = next(i for i in range(1, len(lines)) if lines[i].strip() == "---")
+    except StopIteration:
+        return ""
+    collecting = False
+    parts: list[str] = []
+    for raw in lines[1:end]:
+        if not raw[:1].isspace() and ":" in raw:
+            key, value = raw.split(":", 1)
+            if collecting:
+                break
+            if key.strip() == field:
+                collecting = True
+                value = value.strip()
+                if value:
+                    parts.append(value)
+        elif collecting and raw.strip():
+            parts.append(raw.strip())
+    return " ".join(parts)
+
+
 def _check_links(skill_file: Path, body: str) -> list[Issue]:
     issues: list[Issue] = []
     linked_paths: set[Path] = set()
@@ -92,6 +156,10 @@ def _check_links(skill_file: Path, body: str) -> list[Issue]:
             issues.append(Issue("warning", "link-separator", f"Use forward slashes in portable local links: {target}"))
         path = (skill_file.parent / target).resolve()
         linked_paths.add(path)
+        try:
+            path.relative_to(skill_file.parent.resolve())
+        except ValueError:
+            issues.append(Issue("warning", "link-outside-skill", f"Local link leaves the self-contained skill directory: {target}"))
         if not path.exists():
             issues.append(Issue("error", "broken-link", f"Linked local resource does not exist: {target}"))
 
@@ -101,10 +169,20 @@ def _check_links(skill_file: Path, body: str) -> list[Issue]:
             if path.is_file() and path.resolve() not in linked_paths:
                 relative = path.relative_to(skill_file.parent)
                 issues.append(Issue("warning", "unlinked-reference", f"Reference is not linked directly from SKILL.md: {relative}"))
+            elif path.is_file():
+                try:
+                    reference_text = path.read_text(encoding="utf-8")
+                except UnicodeDecodeError:
+                    issues.append(Issue("error", "reference-encoding", f"Reference must be valid UTF-8: {path.relative_to(skill_file.parent)}"))
+                    continue
+                if len(reference_text.splitlines()) > 100:
+                    first_lines = "\n".join(reference_text.splitlines()[:40]).lower()
+                    if "table of contents" not in first_lines and "## contents" not in first_lines:
+                        issues.append(Issue("warning", "reference-toc", f"Long reference has no early contents section: {path.relative_to(skill_file.parent)}"))
     return issues
 
 
-def validate(path: Path) -> list[Issue]:
+def validate(path: Path, profile: str = "portable") -> list[Issue]:
     skill_file = path / "SKILL.md" if path.is_dir() else path
     if not skill_file.is_file():
         return [Issue("error", "skill-file-missing", f"SKILL.md not found at {skill_file}")]
@@ -115,8 +193,22 @@ def validate(path: Path) -> list[Issue]:
         return [Issue("error", "encoding", "SKILL.md must be valid UTF-8.")]
 
     metadata, body, issues = parse_frontmatter(text)
+    allowed_fields = PROFILE_FIELDS[profile]
+    for field in sorted(_top_level_frontmatter_keys(text) - allowed_fields):
+        issues.append(Issue("warning", "frontmatter-host-field", f"Frontmatter field '{field}' is not documented for the {profile} profile."))
+
     name = metadata.get("name", "").strip()
     description = metadata.get("description", "").strip()
+    compatibility = metadata.get("compatibility", "").strip()
+    allowed_tools = _frontmatter_field_text(text, "allowed-tools")
+
+    if compatibility and len(compatibility) > 500:
+        issues.append(Issue("error", "compatibility-length", "Compatibility must be 500 characters or fewer."))
+
+    if "allowed-tools" in _top_level_frontmatter_keys(text):
+        issues.append(Issue("warning", "allowed-tools-review", "allowed-tools is experimental and host-specific in effect. Review whether it grants approval rather than restricting access."))
+        if not allowed_tools or re.search(r"(?:^|[\s,\[])Bash(?:[\s,\]]|$)|Bash\(\*|Shell|PowerShell", allowed_tools, re.IGNORECASE):
+            issues.append(Issue("warning", "allowed-tools-broad", "allowed-tools appears empty or broad. Scope every preapproved command and review host permission semantics."))
 
     if not name:
         issues.append(Issue("error", "name-missing", "Frontmatter requires a non-empty name."))
@@ -147,17 +239,19 @@ def validate(path: Path) -> list[Issue]:
     if not body:
         issues.append(Issue("error", "body-missing", "SKILL.md requires an instruction body."))
     else:
-        line_count = len(text.splitlines())
-        word_count = len(re.findall(r"\S+", body))
+        line_count = len(body.splitlines())
+        estimated_tokens = (len(body.encode("utf-8")) + 3) // 4
         if line_count > 500:
-            issues.append(Issue("warning", "body-lines", f"SKILL.md has {line_count} lines; use progressive disclosure below 500 lines."))
-        if word_count > 5000:
-            issues.append(Issue("warning", "body-words", f"SKILL.md has {word_count} body words; move details to references."))
+            issues.append(Issue("warning", "body-lines", f"SKILL.md body has {line_count} lines. Use progressive disclosure below 500 lines."))
+        if estimated_tokens > 5000:
+            issues.append(Issue("warning", "body-token-estimate", f"SKILL.md body is roughly {estimated_tokens} tokens by a four-byte proxy. Measure with the target model tokenizer and move details to references."))
         headings = {match.group(1).strip().lower() for match in re.finditer(r"^#{1,6}\s+(.+)$", body, re.MULTILINE)}
         if not any("workflow" in heading or "process" in heading for heading in headings):
             issues.append(Issue("warning", "workflow-section", "Consider an explicit Workflow or Process section."))
         if not any("validation" in heading or "verification" in heading for heading in headings):
             issues.append(Issue("warning", "validation-section", "Consider an explicit Validation or Verification section."))
+        if re.search(r"!`[^`\n]+`|^```!\s*$", body, re.MULTILINE):
+            issues.append(Issue("warning", "dynamic-shell-injection", "Dynamic shell injection can execute before the model sees the skill. Review the command, quoting, output bound, and secret exposure."))
         issues.extend(_check_links(skill_file, body))
 
     return issues
@@ -166,10 +260,11 @@ def validate(path: Path) -> list[Issue]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("path", type=Path, help="Skill directory or SKILL.md path")
+    parser.add_argument("--profile", choices=sorted(PROFILE_FIELDS), default="portable", help="Validate portable fields or a documented host extension profile")
     parser.add_argument("--strict", action="store_true", help="Treat warnings as failures")
     args = parser.parse_args(argv)
 
-    issues = validate(args.path)
+    issues = validate(args.path, profile=args.profile)
     for issue in issues:
         print(f"{issue.severity.upper():7} {issue.code}: {issue.message}")
 

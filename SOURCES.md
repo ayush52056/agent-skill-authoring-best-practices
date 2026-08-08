@@ -4,7 +4,7 @@ This repository synthesizes guidance rather than copying any single source.
 Primary standards and official implementations carry the most weight.
 Practitioner guidance and research are used to refine or challenge them.
 
-Last reviewed: 2026-07-16.
+Last reviewed: 2026-08-08.
 
 ## Research method and coverage
 
@@ -31,10 +31,17 @@ show a small example or signal, and record how the handbook uses it.
 
 - [Agent Skills specification](https://agentskills.io/specification)
 - [Agent Skills best practices](https://agentskills.io/skill-creation/best-practices)
+- [Agent Skills: Optimizing descriptions](https://agentskills.io/skill-creation/optimizing-descriptions)
+- [Agent Skills: Evaluating output quality](https://agentskills.io/skill-creation/evaluating-skills)
+- [Agent Skills: Using scripts](https://agentskills.io/skill-creation/using-scripts)
 - [OpenAI: Build skills](https://learn.chatgpt.com/docs/build-skills)
-- [OpenAI skills repository](https://github.com/openai/skills)
+- [OpenAI plugins repository](https://github.com/openai/plugins)
+- [OpenAI skills repository, deprecated](https://github.com/openai/skills)
 - [Anthropic: Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
 - [Anthropic: Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
+- [Claude Code: Extend Claude with skills](https://code.claude.com/docs/en/skills)
+- [Claude Code Agent SDK: Skills](https://code.claude.com/docs/en/agent-sdk/skills)
+- [Anthropic: Skills for enterprise](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise)
 - [Anthropic skills repository](https://github.com/anthropics/skills)
 - [GitHub Copilot: Add Agent Skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
 - [GitHub Copilot SDK: Agent Skills](https://docs.github.com/en/copilot/how-tos/copilot-sdk/features/skills)
@@ -51,16 +58,22 @@ show a small example or signal, and record how the handbook uses it.
 - [NVIDIA SkillSpector](https://github.com/nvidia/skillspector)
 - [Cloudflare skills](https://github.com/cloudflare/skills)
 - [Cloudflare Agent Skills discovery RFC](https://github.com/cloudflare/agent-skills-discovery-rfc)
-- [Vercel agent skills](https://github.com/vercel-labs/agent-skills)
+- [Vercel Skills CLI](https://github.com/vercel-labs/skills)
 - [Trail of Bits skills](https://github.com/trailofbits/skills)
+- [Databricks Agent Skills](https://github.com/databricks/databricks-agent-skills)
 
 ## Practitioner implementations and writing
 
 - [Matt Pocock: skills](https://github.com/mattpocock/skills)
-- [Matt Pocock: Writing great skills](https://raw.githubusercontent.com/mattpocock/skills/main/skills/productivity/writing-great-skills/SKILL.md)
+- [Matt Pocock: Writing for agents](https://github.com/mattpocock/skills/blob/main/skills/productivity/writing-for-agents/SKILL.md)
+- [Matt Pocock: Skill mechanics](https://github.com/mattpocock/skills/blob/main/skills/productivity/writing-for-agents/SKILL-MECHANICS.md)
+- [Matt Pocock: Setup skill](https://github.com/mattpocock/skills/blob/main/skills/engineering/setup-matt-pocock-skills/SKILL.md)
 - [Jesse Vincent: Superpowers](https://github.com/obra/superpowers)
 - [Jesse Vincent: Skills for Claude](https://blog.fsck.com/2025/10/16/skills-for-claude/)
 - [Addy Osmani: Agent Skills](https://addyosmani.com/blog/agent-skills/)
+- [Addy Osmani: Agent Skills repository](https://github.com/addyosmani/agent-skills)
+- [Corey Haines: Marketing Skills](https://github.com/coreyhaines31/marketingskills)
+- [K-Dense: Scientific Agent Skills](https://github.com/K-Dense-AI/scientific-agent-skills)
 - [Phil Schmid: 8 tips for writing effective Agent Skills](https://www.philschmid.de/agent-skills-tips)
 - [Trail of Bits: Skill authoring guide](https://www.mintlify.com/trailofbits/skills/contributing/skill-authoring)
 - [Minko Gechev: Skills best practices](https://github.com/mgechev/skills-best-practices)
@@ -80,6 +93,11 @@ show a small example or signal, and record how the handbook uses it.
 - [Security at Scale: An Empirical Study of Agent Skills](https://arxiv.org/abs/2601.10338)
 - [Prompt Injection Attacks on Agent Skills](https://arxiv.org/abs/2510.26328)
 - [Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry](https://arxiv.org/abs/2605.11418)
+- [SWE-Skills-Bench](https://arxiv.org/abs/2603.15401)
+- [SkillSec-Eval](https://arxiv.org/abs/2607.13987)
+- [What Keeps Agent Skills from Being Reusable?](https://openreview.net/pdf/2cdc7efc5d27097ba5d6b4a0814f5d624c2b693b.pdf)
+- [OpenHands: How to Evaluate Agent Skills](https://www.openhands.dev/blog/evaluating-agent-skills)
+- [LangChain: Evaluating Skills](https://www.langchain.com/blog/evaluating-skills)
 
 ## Evidence policy
 

@@ -13,6 +13,7 @@ A skill is not publishable regardless of score if any of these are true:
 - no validation for a workflow that changes files or external state.
 - bundled scripts fail their representative execution tests.
 - licensing or provenance of copied material is unknown.
+- no paired evaluation outputs and grading evidence are retained.
 - evaluation shows no meaningful improvement over the no-skill baseline.
 
 ## Scoring
@@ -34,13 +35,13 @@ A skill is not publishable regardless of score if any of these are true:
 
 - 5: actions are ordered and written in imperative form.
 - 5: meaningful branches have selection criteria.
-- 5: stages have observable completion criteria.
+- 5: stages have checkable completion criteria that are exhaustive when coverage matters.
 - 5: predictable failures have safe recovery behavior.
 
 ### Context efficiency: 15 points
 
 - 5: `SKILL.md` contains only the core workflow.
-- 5: references are branch-specific, directly linked, non-duplicative, and observed in evaluation.
+- 5: context pointers are branch-specific, direct, non-duplicative, co-located, and observed in evaluation.
 - 5: scripts and assets are used instead of repeatedly embedding large content.
 
 ### Reliability and evaluation: 15 points
@@ -51,7 +52,8 @@ A skill is not publishable regardless of score if any of these are true:
 
 ### Safety and governance: 10 points
 
-- 3: permissions and side effects follow least privilege.
+- 3: permissions and side effects follow least privilege, and host tool fields
+  are interpreted by their documented effect rather than their name.
 - 3: instructions, code, dependencies, and external content are reviewed.
 - 2: provenance, ownership, and update policy are recorded.
 - 2: high-risk operations have previews, approvals, and fail-closed behavior.
@@ -59,8 +61,8 @@ A skill is not publishable regardless of score if any of these are true:
 ### Maintainability: 5 points
 
 - 2: package passes structural validation.
-- 2: instructions have one source of truth and obsolete guidance is removed.
-- 1: host extensions, freshness checks, ownership, and retirement criteria are documented.
+- 2: instructions have one source of truth, avoid cheap environment lookups, and remove tested no-ops.
+- 1: host adapters, freshness checks, ownership, and retirement criteria are documented.
 
 ## Interpretation
 

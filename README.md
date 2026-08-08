@@ -10,19 +10,22 @@ write, evaluate, secure, and maintain skills. It is not a skill marketplace.
 
 1. Read the [authoring standard](docs/authoring-standard.md).
 2. Choose an invocation policy using [invocation and portfolios](docs/invocation-and-portfolios.md).
-3. Copy the [portable SKILL.md template](templates/SKILL.md).
-4. Score the draft with the [quality rubric](docs/quality-rubric.md).
-5. Run the [trigger](templates/trigger-evals.json) and [task](templates/task-eval.json) evaluations.
-6. Apply the controls in [security and governance](docs/security-and-governance.md).
-7. Review [how public sources became examples](docs/source-reviews.md).
-8. Validate the package:
+3. Separate the portable package from [host adapters](docs/host-adapters.md).
+4. Copy the [portable SKILL.md template](templates/SKILL.md).
+5. Score the draft with the [quality rubric](docs/quality-rubric.md).
+6. Run the [trigger evaluation](templates/trigger-evals.json) and follow the [task evaluation method](docs/evaluation.md).
+7. Apply the controls in [security and governance](docs/security-and-governance.md).
+8. Review [how public sources became examples](docs/source-reviews.md).
+9. Validate the package:
 
    ```text
    python scripts/validate_skill.py path/to/skill
+   python scripts/validate_evaluation.py path/to/trigger-evals.json --strict
    ```
 
 See [examples/diagnose-test-failures](examples/diagnose-test-failures/SKILL.md)
-for a compact worked example.
+for one compact worked skill. The repository keeps starter artifacts minimal.
+Use the [evaluation guide](docs/evaluation.md) to design task-specific evidence.
 
 ## The short version
 
@@ -45,28 +48,35 @@ A strong skill:
 
 ## Repository map
 
-```text
-docs/
-  authoring-standard.md        Canonical design and writing standard
-  quality-rubric.md            Scored review rubric and hard gates
-  evaluation.md                Trigger and task evaluation method
-  invocation-and-portfolios.md Invocation policy and catalog design
-  security-and-governance.md   Supply-chain and lifecycle controls
-  evidence-map.md              Recommendation-to-source traceability
-  source-reviews.md            Source patterns and how they were applied
-examples/
-  diagnose-test-failures/      Worked example with progressive disclosure
-templates/
-  SKILL.md                     Portable starter template
-  trigger-evals.json           Trigger-suite starter fixture
-  task-eval.json               Baseline and task-evaluation fixture
-scripts/
-  validate_skill.py            Lightweight structural validator
-tests/
-  test_validate_skill.py       Validator tests
-SOURCES.md                     Primary sources and practitioner references
-CONTRIBUTING.md                Evidence requirements for changes
-```
+### Core guides
+
+| File | Purpose |
+|---|---|
+| [Authoring standard](docs/authoring-standard.md) | Canonical design and writing standard |
+| [Host adapters](docs/host-adapters.md) | Portable core and documented host extensions |
+| [Invocation and portfolios](docs/invocation-and-portfolios.md) | Invocation policy, routing, and catalog design |
+| [Evaluation](docs/evaluation.md) | Trigger and task evaluation method |
+| [Security and governance](docs/security-and-governance.md) | Supply-chain and lifecycle controls |
+| [Quality rubric](docs/quality-rubric.md) | Scored review rubric and hard gates |
+
+### Evidence and examples
+
+| File | Purpose |
+|---|---|
+| [Evidence map](docs/evidence-map.md) | Recommendation-to-source traceability |
+| [Source reviews](docs/source-reviews.md) | Source patterns, examples, and limitations |
+| [Sources](SOURCES.md) | Official, production, practitioner, and research sources |
+| [Diagnose test failures](examples/diagnose-test-failures/SKILL.md) | Worked runtime skill with progressive disclosure |
+
+### Minimal starter files
+
+| File | Purpose |
+|---|---|
+| [Portable SKILL.md](templates/SKILL.md) | Portable starter template |
+| [Trigger evaluation](templates/trigger-evals.json) | Trigger test definitions and observed trials |
+| [Skill validator](scripts/validate_skill.py) | Portable structure and quality checks |
+| [Evaluation validator](scripts/validate_evaluation.py) | Evaluation definition and result checks |
+| [Validator tests](tests/test_validate_skill.py) | Regression tests for the validator |
 
 ## Scope and portability
 
