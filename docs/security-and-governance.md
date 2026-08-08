@@ -17,6 +17,16 @@ Consider these risks:
 - silent upstream changes after installation.
 - sensitive information embedded in logs, examples, fixtures, or generated artifacts.
 
+Review the whole lifecycle rather than only script execution:
+
+| Stage | Main questions |
+|---|---|
+| Admission | Is the source authentic, reviewed, licensed, pinned, and safe to unpack? |
+| Retrieval | Can names, descriptions, or keyword bait cause the wrong skill to load? |
+| Planning | Can the skill expand scope, permissions, or side effects beyond the user request? |
+| Execution | Can tools, scripts, dependencies, or external content expose data or alter unexpected state? |
+| Evolution | Can updates, moving references, or dependency changes invalidate the approved revision? |
+
 ## Controls for authors
 
 - request the minimum tools and permissions needed.
@@ -30,6 +40,16 @@ Consider these risks:
 - pin dependencies and verify integrity when reproducibility matters.
 - fail closed when required validation or authorization is unavailable.
 - test malicious, malformed, and oversized inputs.
+
+Do not treat `allowed-tools` as a restrictive sandbox. On Claude Code it grants
+listed tools without another approval while other tools remain governed by the
+normal permission system. Review its exact host semantics, narrow every pattern,
+and use deny policy or isolation when real restriction is required.
+
+Treat dynamic shell injection as code execution. Commands embedded in a skill
+can run before the model sees the rendered instructions. Use fixed reviewed
+commands, bound their output, prevent untrusted interpolation, and assess secret
+exposure. Document the host control that disables the feature when available.
 
 ## Controls for adopters
 
@@ -79,6 +99,7 @@ non-malicious, or safe for the current permission set.
 - signed artifacts and verifiable provenance.
 - documented capability and permission card.
 - benchmark and adversarial evaluation reports.
+- a capability card describing purpose, permissions, dependencies, supported hosts, limitations, and owner.
 - approved registry with version pinning.
 - audit logging and incident response path.
 - periodic re-certification and revocation process.
@@ -114,10 +135,15 @@ detectors for at least one security-relevant pattern, and found an association
 between bundled scripts and higher vulnerability odds. These are screening
 signals, not proof that every flagged skill is malicious or exploitable. They
 support deeper review of scripts, dependencies, permissions, and provenance.
-they do not justify automatically rejecting all scripted skills. See the
+They do not justify automatically rejecting all scripted skills. See the
 [security study](https://arxiv.org/abs/2601.10338), the
 [prompt-injection study](https://arxiv.org/abs/2510.26328), and the
 [semantic supply-chain study](https://arxiv.org/abs/2605.11418).
+
+SkillSec-Eval further organizes threats across admission, retrieval, planning,
+execution, and evolution. Use that lifecycle to locate controls, not as proof
+that any particular skill is unsafe. See
+[SkillSec-Eval](https://arxiv.org/abs/2607.13987).
 
 ## Change management
 

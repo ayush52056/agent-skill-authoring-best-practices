@@ -16,6 +16,12 @@ it is host-specific.
 | Implicit | Users should not need to know the skill exists and false activation is cheap | Over-triggering, catalog cost, unexpected behavior | Positive, negative, near-miss, and distractor prompts |
 | Explicit | The operation is high-risk, expensive, rare, or intentionally user-controlled | Users may forget the skill or use the wrong one | Discoverability and correct-use tests |
 | Both | Routine discovery is useful but expert users also need deterministic selection | Two entry paths can drift | Test both paths against the same task contract |
+Every invocation policy trades two costs. Context load is paid by metadata that
+the host keeps visible so the model can discover a skill. Cognitive load is paid
+by people who must remember which explicit skill to invoke. Model discovery is
+worth its catalog cost only when autonomous selection is needed. Explicit
+invocation is worth its memory cost when human judgment should control entry.
+Measure both costs in the target host because discovery and menu behavior differ.
 
 Prefer explicit invocation for destructive operations, production changes,
 security-sensitive review, costly external calls, or any workflow where a false
@@ -26,7 +32,8 @@ to understand the skill.
 For example, Codex can disable implicit invocation with host metadata in
 `agents/openai.yaml`. Other hosts expose different controls. Keep these files
 beside, not inside, the portable contract unless the open specification adopts
-the field.
+the field. Use [portable core and host adapters](host-adapters.md) for current
+host examples and security qualifications.
 
 ## 2. Budget the catalog
 
@@ -44,6 +51,19 @@ budget is exhausted.
 
 Do not treat a maximum description length as a target. Shorter is useful only
 when it still separates the skill from its closest alternatives.
+
+### Account for loaded-skill lifecycle
+
+Catalog cost is only the first context cost. Some hosts keep invoked skill
+instructions in the conversation after the current response. Claude Code, for
+example, documents reattachment of recent skill content after compaction within
+per-skill and combined token budgets.
+
+- keep critical instructions near the start of `SKILL.md`.
+- test long sessions that invoke several skills in different orders.
+- record whether important guidance survives compaction.
+- reinvoke a skill when the host requires it to restore full instructions.
+- do not assume a fresh-context trigger test predicts long-session behavior.
 
 ## 3. Prevent collisions and trigger abuse
 
@@ -93,6 +113,8 @@ If the router becomes a catalog inside a skill, split or remove it.
 
 Track at least: owner, purpose, invocation policy, closest competitors,
 supported hosts/models, last evaluation, approved revision, and retirement rule.
+For each closest competitor, retain example prompts that belong to one skill,
+the other skill, and neither skill.
 
 Distinguish between two types of skills:
 

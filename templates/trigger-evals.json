@@ -1,38 +1,49 @@
 {
   "skill": "replace-with-skill-name",
-  "suite_version": "0.1.0",
+  "suite_version": "0.2.0",
+  "status": "definition-only",
+  "description_revision": "replace-with-commit-or-content-hash",
   "host": "replace-with-host",
   "model": "replace-with-model",
+  "invocation_mode": "implicit",
+  "trials_per_case": 3,
+  "starting_trigger_threshold": 0.5,
   "cases": [
     {
-      "id": "positive-001",
+      "id": "positive-train-001",
       "group": "positive",
+      "split": "train",
       "prompt": "A realistic request that should activate the skill.",
       "should_trigger": true,
       "expected_skill": "replace-with-skill-name",
       "competing_skills": [],
       "rationale": "The request needs the complete workflow owned by this skill.",
-      "held_out": false
+      "observed_trials": [],
+      "trigger_rate": null
     },
     {
-      "id": "negative-001",
+      "id": "negative-validation-001",
       "group": "negative",
+      "split": "validation",
       "prompt": "A nearby request that shares vocabulary but needs another workflow.",
       "should_trigger": false,
       "expected_skill": null,
       "competing_skills": ["replace-with-neighbor"],
       "rationale": "Shared keywords alone must not select this skill.",
-      "held_out": false
+      "observed_trials": [],
+      "trigger_rate": null
     },
     {
-      "id": "boundary-001",
+      "id": "boundary-final-001",
       "group": "boundary",
+      "split": "final",
       "prompt": "An incomplete request at the edge of the skill's scope.",
       "should_trigger": false,
       "expected_skill": null,
       "competing_skills": [],
       "rationale": "The agent should clarify before selecting a specialized workflow.",
-      "held_out": true
+      "observed_trials": [],
+      "trigger_rate": null
     }
   ]
 }

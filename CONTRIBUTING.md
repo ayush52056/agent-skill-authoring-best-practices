@@ -20,6 +20,7 @@ Keep this repository focused on evidence-backed skill-authoring practice.
 - Prefer concise instructions and examples over conceptual essays.
 - Do not add a convention solely because a popular repository uses it.
 - Separate portable requirements from optional host metadata.
+- Record a source status, reviewed date, and version or commit for changing claims.
 - Add regression prompts or tests for corrected failures.
 - Keep trigger and task fixtures machine-readable. Mark cases held out before tuning.
 - Test portfolio collisions when a description or invocation policy changes.
@@ -35,5 +36,6 @@ Run before submitting:
 
 ```text
 python -m unittest discover -s tests -v
-python scripts/validate_skill.py examples/diagnose-test-failures
+python scripts/validate_skill.py examples/diagnose-test-failures --strict
+python scripts/validate_evaluation.py templates/trigger-evals.json --strict
 ```

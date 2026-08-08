@@ -41,7 +41,13 @@ This example applies the extension boundaries described by
 
 ## 2. Start from observed behavior
 
-Before writing instructions, record concrete examples:
+Before writing instructions, collect evidence from completed work, including
+successful runs as well as failures. Useful inputs include user corrections,
+tool traces, review comments, runbooks, issue history, version-control fixes,
+input and output artifacts, and repeated explanations supplied during real
+tasks.
+
+Record concrete examples:
 
 1. Prompts that should activate the skill.
 2. Prompts that must not activate it.
@@ -145,8 +151,15 @@ description: What the skill does. Use when the relevant trigger conditions occur
 Use lowercase letters, digits, and hyphens for `name`. Keep it under 64
 characters and match the containing directory. Prefer short, verb-led names.
 
+The open specification also defines optional `license`, `compatibility`,
+`metadata`, and experimental `allowed-tools` fields. Use them only when their
+meaning is documented and keep the portable `name` and `description` valid.
+Tool permission semantics vary by host, so `allowed-tools` always requires a
+host-specific security review.
+
 Some hosts support additional frontmatter or UI metadata. Add it only for a
-documented need, and keep the portable `name` and `description` valid.
+documented need. Keep host behavior in a separate adapter and follow
+[portable core and host adapters](host-adapters.md).
 
 Use forward slashes in relative resource links. Avoid absolute paths, local
 machine assumptions, and deep reference chains.
@@ -173,6 +186,10 @@ Write instructions in imperative form. For every stage, tell the agent:
 - what evidence confirms the stage is complete.
 - what to do if the expected evidence is absent.
 
+Make every completion criterion checkable. When a stage promises coverage, make
+the criterion exhaustive enough to expose omissions. For example, require every
+changed public interface to be accounted for instead of asking for a general
+review.
 Give one preferred default path and only the branches that materially change
 the result. Use ordered steps where order, branching, or checkpoints matter.
 Otherwise state the outcome, constraints, and validation without inventing a
@@ -182,6 +199,10 @@ format is part of correctness.
 
 Prefer vertical slices that produce testable progress. Avoid long horizontal
 phases that modify many components before any result can be checked.
+For setup and configuration skills, inspect existing state before asking
+questions. Recommend a safe default, ask only about unresolved decisions, show
+the planned output, and update existing configuration without creating duplicate
+sections or files.
 
 Weak:
 
@@ -221,8 +242,14 @@ Treat context as a limited shared resource:
 1. `name` and `description` advertise the skill.
 2. `SKILL.md` supplies the core workflow after activation.
 3. Resources supply branch-specific detail only when needed.
+Treat the description and every resource link as a conditional context pointer.
+It must name what it points to and the exact branch that should load it. A weak
+pointer can make required material behave like an intermittent dependency even
+when the referenced content is correct.
 
-Keep `SKILL.md` below 500 lines and preferably well below 5,000 words. Move
+Keep `SKILL.md` below 500 lines and preferably below 5,000 tokens. Token counts
+vary by model and tokenizer, so treat this as a context budget rather than an
+exact portability limit. Move
 large schemas, API documentation, catalogs, extended examples, and variant
 instructions into `references/`. Link every reference directly from
 `SKILL.md`, explain when to read it, and avoid chains where one reference only
@@ -245,10 +272,22 @@ Read `references/api-errors.md` only after an API request returns a non-success 
 
 The strong form is adapted from the conditional-reference pattern in the
 [Agent Skills and Anthropic guidance](source-reviews.md#open-standard-and-official-documentation).
+Use progressive disclosure to protect workflow attention, not only to reduce
+token use. Keep instructions needed by every branch in the main file. Move
+branch-specific reference material behind a pointer so it does not bury the
+active steps.
+
+Co-locate each concept's definition, rules, examples, and exceptions under one
+heading. Scattering related guidance can cause the agent to apply only the part
+it happens to find.
 
 Observe which references the agent actually loads during evaluations. Promote
 repeatedly required guidance into `SKILL.md`, improve routing for resources that
 are needed but skipped, and delete resources that remain unused.
+
+Keep a non-obvious fact or warning in `SKILL.md` when the agent cannot reliably
+recognize the condition that would tell it to load a reference. Progressive
+disclosure should not hide a critical branch selector.
 
 ## 9. Use resources deliberately
 
@@ -258,9 +297,15 @@ Add a script when an operation is repeatedly rewritten, mechanically
 verifiable, or too fragile for ad hoc generation. Scripts should:
 
 - accept explicit inputs and validate them.
+- run noninteractively and provide concise help.
 - produce stable, inspectable output.
+- write structured results to standard output and diagnostics to standard error.
 - fail closed with useful errors that identify the failed input or check and a
   safe recovery action, rather than returning the problem to the model.
+- use documented exit codes.
+- support a dry run before risky changes.
+- be idempotent where repeated execution is expected.
+- cap output or provide pagination and explicit output files.
 - avoid hidden network or filesystem side effects.
 - preserve user data unless destructive behavior is explicitly requested.
 - declare and verify runtime dependencies.
@@ -329,6 +374,9 @@ Use anti-rationalization language selectively. It is valuable when agents have
 repeatedly skipped a critical gate, but excessive prohibitions waste context and
 can make a skill rigid or noisy. Whenever possible, replace prose constraints
 with mechanical enforcement.
+State the desired behavior positively when possible. If a hard prohibition is
+necessary, pair it with the safe action the agent should take. Treat this as a
+testable writing heuristic rather than a replacement for mechanical controls.
 
 ## 12. Separate authoring from evaluation
 
@@ -339,6 +387,11 @@ multiple isolated trials for critical cases and cover every consequential branch
 and behavioral constraint. Test every model, host, invocation path, and realistic
 catalog configuration the skill claims to support. Preserve prompts, outputs,
 logs, diffs, resource loads, and validation artifacts so regressions can be diagnosed.
+
+Retain machine-readable grading evidence, timing, token observations, human
+feedback, and an aggregated benchmark summary. Do not publish benchmark files
+with invented or estimated results. Mark evaluation definitions as unexecuted
+until real runs have been recorded.
 
 Follow [evaluation.md](evaluation.md) for the complete method.
 
@@ -352,6 +405,9 @@ Follow [evaluation.md](evaluation.md) for the complete method.
 - consolidate duplicated rules into one source of truth.
 - update from real usage traces and documented failure modes.
 - revalidate host-specific metadata when the portable skill changes.
+- avoid restating facts that the agent can cheaply inspect in configuration,
+  package scripts, directory structure, or command help.
+- remove instructions that do not change behavior relative to the tested model's default.
 
 Classify the skill as primarily a **capability skill** or **preference skill**.
 Re-baseline capability skills after material model or tool upgrades and retire
@@ -388,6 +444,8 @@ A skill is ready for use only when:
 - its trigger suite meets the agreed precision and recall targets.
 - explicit or implicit invocation is justified and tested with portfolio distractors.
 - its workflow produces a measurable improvement over the baseline.
+- paired run outputs, grading evidence, available timing and cost observations,
+  benchmark results, and documented missing measurements are retained.
 - required validation and failure behavior work in realistic tests.
 - bundled scripts execute successfully on representative inputs.
 - security review covers instructions, code, dependencies, and side effects.

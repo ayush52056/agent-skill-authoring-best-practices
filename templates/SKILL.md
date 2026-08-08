@@ -5,18 +5,6 @@ description: Perform the distinctive action on the relevant artifact and produce
 
 # Skill title
 
-## Inputs
-
-- Identify the information and artifacts required to begin.
-- Discover safe defaults when possible. Ask only for choices that materially change the result.
-- Stop and report the missing requirement when proceeding would be unsafe.
-
-## Outputs
-
-- Name the files, decisions, reports, or external state this skill produces.
-- State the format when it is part of correctness.
-- Define what the skill deliberately does not produce or own.
-
 ## Workflow
 
 1. Inspect the task, relevant local instructions, and current state.
@@ -28,6 +16,8 @@ description: Perform the distinctive action on the relevant artifact and produce
 Use this ordered form only when sequence or checkpoints matter. For adaptable
 work, replace it with a preferred outcome, constraints, decision criteria, and
 validation. Keep one default path. Add only branches that change the result.
+End every stage with a checkable completion criterion. When the stage promises
+coverage, make the criterion exhaustive enough to reveal omissions.
 
 ## Validation
 
@@ -45,11 +35,9 @@ validation. Keep one default path. Add only branches that change the result.
 
 ## Resources
 
-- Link and read the relevant file under `references/` only when its workflow branch needs it.
+- Link each reference directly, name what it contains, and state the exact
+  workflow branch that should load it.
 - Link and run the deterministic operation under `scripts/`. Declare its runtime dependencies and expected output.
 - Reuse files in `assets/` when producing the associated output.
 
-Delete resource entries and sections that the skill does not need. Keep detailed
-schemas, catalogs, extended examples, and variant-specific instructions out of
-this file and link them directly from here. Use forward-slash relative paths and
-say whether each script should be executed or merely inspected.
+Delete this section when the skill does not need bundled resources.
